@@ -15,4 +15,3 @@ if __name__ == '__main__':
             'Chimera': Corner1_Edge2_Ungreedy3(), 
         }
     ).start()
- 
