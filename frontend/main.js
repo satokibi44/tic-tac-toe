@@ -41,7 +41,14 @@ window.onload = () => {
 };
 
 function getElements(){
-    const User1 = document.getElementsByName("User1");
-    const User2 = document.getElementsByName("User2");
-    console.log(User1)
+    let User1 = document.getElementsByName("User1");
+    let User2 = document.getElementsByName("User2");
+    let len = User1.length;
+    for (let i = 0; i < len; i++){
+        if (User1.item(i).checked){
+            console.log(User1.item(i).value + ' is checked');
+        }else{
+            console.log(User1.item(i).value + ' is not checked');
+        }
+    }
 }
