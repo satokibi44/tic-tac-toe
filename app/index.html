@@ -11,22 +11,22 @@
 
 <body>
     <!-- 盤 -->
+    <form action="http://www.futomi.com/lecture/form/exec/gettest.cgi" method="get">
     <div id="stage" class="stage"></div>
     <select name="User1">
         <option value="">User1</option>
         <option>random</option>
-        <option>選択肢のサンプル2</option>
-        <option>選択肢のサンプル3</option>
+        <option>random</option>
+        <option>random</option>
     </select>
     <select name="User2">
         <option value="">User2</option>
         <option>random</option>
-        <option>選択肢のサンプル2</option>
-        <option>選択肢のサンプル3</option>
+        <option>random</option>
+        <option>random</option>
     </select><br>
-    <button class="favorite styled" type="button">
-        Game start
-    </button>
+    <input type="submit" name="submit" value="Game start" />
+    </form>
     <!-- 各マスを描画するためのテンプレート -->
     <div id="square-template" class="square">
         <div class="stone"></div>
