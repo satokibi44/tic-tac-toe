@@ -11,7 +11,6 @@
 
 <body>
     <!-- 盤 -->
-    <form action="http://www.futomi.com/lecture/form/exec/gettest.cgi" method="get">
     <div id="stage" class="stage"></div>
     <select name="User1">
         <option value="">User1</option>
@@ -25,13 +24,12 @@
         <option>random</option>
         <option>random</option>
     </select><br>
+    <button name="submit"  onClick="getElements();">Game start</button>
     <!-- 各マスを描画するためのテンプレート -->
     <div id="square-template" class="square">
         <div class="stone"></div>
     </div>
     <script src="main.js"></script>
-    <input type="submit" name="submit" value="Game start" />
-    </form>
 </body>
 
 </html>

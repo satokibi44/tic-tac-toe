@@ -39,3 +39,9 @@ const createSquares = () => {
 window.onload = () => {
   createSquares();
 };
+
+function getElements(){
+    let User1 = document.getElementById("User1");
+    let User2 = document.getElementById("User2");
+    console.log(User1)
+}
