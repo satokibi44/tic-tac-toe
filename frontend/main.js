@@ -41,7 +41,7 @@ window.onload = () => {
 };
 
 function getElements(){
-    const User1 = document.getElementById("User1");
-    const User2 = document.getElementById("User2");
+    const User1 = document.getElementsByName("User1");
+    const User2 = document.getElementsByName("User2");
     console.log(User1)
 }
