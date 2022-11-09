@@ -1,5 +1,5 @@
 import sys
-from backend.a import Board
+from backend.board import Board
 def handler(event, context): 
     user1 = event.get('queryStringParameters').get('USER1')
     user2 = event.get('queryStringParameters').get('USER2')
@@ -12,7 +12,9 @@ def handler(event, context):
 
     board_inst = Board()
     board_inst.mk_board(board)
-    for i in range(board_inst.BOARD_SIZE*board_inst.BOARD_SIZE):
-        board_inst.checkIN(i)
+    
+    for x in range(board_inst.BOARD_SIZE):
+        for y in range(board_inst.BOARD_SIZE):
+            board_inst.checkMobility(x,y,-1)
        
     return 'Hello from AWS Lambda using Python' + sys.version + '!'

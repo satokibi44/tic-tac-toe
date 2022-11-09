@@ -69,7 +69,7 @@ class Board:
         self.MovableDir = np.zeros((BOARD_SIZE + 2, BOARD_SIZE + 2), dtype=int)
 
         # MovablePosとMovableDirを初期化
-        self.initMovable()
+        #self.initMovable()
 
     """
     どの方向に石が裏返るかをチェック
@@ -336,9 +336,9 @@ class Board:
                 y_tmp += 1
                 
     def mk_board(self, board):
-        for x in range(BOARD_SIZE):
-            for y in range(BOARD_SIZE):
-                self.RawBoard[x,y] = board[x*8+y]
+        for x in range(self.BOARD_SIZE):
+            for y in range(self.BOARD_SIZE):
+                self.RawBoard[x+1,y+1] = board[x*8+y]
 
     """
     石を置く
@@ -484,88 +484,3 @@ class Board:
                 return True
 
         return False
-
-
-"""
-メインコード
-"""
-
-# ボートインスタンスの作成
-board = Board()
-
-'''
-# テスト用
-board.RawBoard = np.array([
-    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-    [2, 1, 1, 1, 1, 1, 1, 1, 1, 2],
-    [2, 1, 1,-1,-1, 1, 1, 1, 1, 2],
-    [2, 1, 1,-1,-1,-1, 1,-1, 1, 2],
-    [2, 1, 1, 1,-1, 1, 1, 1, 1, 2],
-    [2, 1, 1,-1, 1,-1,-1, 0, 1, 2],
-    [2, 1,-1, 1, 1, 1, 1, 1, 1, 2],
-    [2, 1, 0,-1,-1,-1,-1, 1, 1, 2],
-    [2, 1, 0, 0, 0, 0,-1, 1, 1, 2],
-    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]])
-board.initMovable()
-'''
-
-# 手番ループ
-while True:
-
-    # 盤面の表示
-    board.display()
-
-    # 手番の表示
-    if board.CurrentColor == BLACK:
-        print('黒の番です:', end="")
-    else:
-        print('白の番です:', end="")
-    IN = input()
-    print()
-
-    # 入力手をチェック
-    if board.checkIN(IN):
-        x = IN_ALPHABET.index(IN[0]) + 1
-        y = IN_NUMBER.index(IN[1]) + 1
-    else:
-        print('正しい形式(例：f5)で入力してください')
-        continue
-
-    # 手を打つ
-    if not board.move(x, y):
-        print('そこには置けません')
-        continue
-
-    # 終局判定
-    if board.isGameOver():
-        board.display()
-        print('おわり')
-        break
-
-    # パス
-    if not board.MovablePos[:, :].any():
-        board.CurrentColor = - board.CurrentColor
-        board.initMovable()
-        print('パスしました')
-        print()
-        continue
-
-
-# ゲーム終了後の表示
-print()
-
-# 各色の数
-count_black = np.count_nonzero(board.RawBoard[:, :] == BLACK)
-count_white = np.count_nonzero(board.RawBoard[:, :] == WHITE)
-
-print('黒:', count_black)
-print('白:', count_white)
-
-# 勝敗
-dif = count_black - count_white
-if dif > 0:
-    print('黒の勝ち')
-elif dif < 0:
-    print('白の勝ち')
-else:
-    print('引き分け')
