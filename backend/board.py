@@ -39,7 +39,7 @@ MAX_TURNS = 60
 
 
 class Board:
-    BOARD_SIZE = BOARD_SIZE
+    size = BOARD_SIZE
 
     def __init__(self):
 
@@ -69,13 +69,37 @@ class Board:
         self.MovableDir = np.zeros((BOARD_SIZE + 2, BOARD_SIZE + 2), dtype=int)
 
         # MovablePosとMovableDirを初期化
-        #self.initMovable()
+        self.initMovable()
 
     """
     どの方向に石が裏返るかをチェック
     """
     
     delete_wall_board = []
+    
+    def get_diff_board(self,prev_board):
+        diff_boards = []
+        for x in range(self.size):
+            diff_board = []
+            for y in range(self.size):
+                if prev_board[x][y] == self.RawBoard[x][y]:
+                    diff_board.append(True)
+                else:
+                    diff_board.append(False)
+            diff_boards.append(diff_board)
+        return diff_boards
+                
+                       
+    
+    def get_legal_moves(self, color):
+        legal_moves = []
+        for x in range(self.size):
+             for y in range(self.size):
+                   if self.checkMobility(x,y,color):
+                       legal_moves.append((x,y))
+        legal_moves = self.delete_wall_from_moves(legal_moves)
+        return legal_moves
+    
     def delete_wall(self,moves):
         for x in range(BOARD_SIZE):
             low = []
@@ -91,8 +115,8 @@ class Board:
         return moves
         
     def mk_board(self, board):
-        for x in range(self.BOARD_SIZE):
-            for y in range(self.BOARD_SIZE):
+        for x in range(self.size):
+            for y in range(self.size):
                 self.RawBoard[x,y] = board[x*8+y]    
 
     def checkMobility(self, x, y, color):
@@ -221,7 +245,10 @@ class Board:
                 dir = dir | LOWER_LEFT
 
         return dir
-
+    
+    def add_wall2move(self,move):
+        move = (move[0]+1,move[1]+1)
+        return move
     """
     石を置くことによる盤面の変化をボードに反映
     """
@@ -356,8 +383,8 @@ class Board:
                 y_tmp += 1
                 
     def mk_board(self, board):
-        for x in range(self.BOARD_SIZE):
-            for y in range(self.BOARD_SIZE):
+        for x in range(self.size):
+            for y in range(self.size):
                 self.RawBoard[x+1,y+1] = board[x*8+y]
 
     """
