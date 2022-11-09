@@ -74,6 +74,26 @@ class Board:
     """
     どの方向に石が裏返るかをチェック
     """
+    
+    delete_wall_board = []
+    def delete_wall(self,moves):
+        for x in range(BOARD_SIZE):
+            low = []
+            for y in range(BOARD_SIZE):
+                if self.RawBoard[x, y] != 2:
+                    low.append(self.RawBoard[x, y])
+            if len(low) != 0:
+                self.delete_wall_board.append(low)
+                
+    def delete_wall_from_moves(self, moves):
+        for i in range(len(moves)):
+            moves[i] = (moves[i][0]-1, moves[i][1]-1)
+        return moves
+        
+    def mk_board(self, board):
+        for x in range(self.BOARD_SIZE):
+            for y in range(self.BOARD_SIZE):
+                self.RawBoard[x,y] = board[x*8+y]    
 
     def checkMobility(self, x, y, color):
 
