@@ -39,6 +39,7 @@ MAX_TURNS = 60
 
 
 class Board:
+    BOARD_SIZE = BOARD_SIZE
 
     def __init__(self):
 
@@ -333,6 +334,11 @@ class Board:
                 # さらに1マス左下に進めてループを回す
                 x_tmp -= 1
                 y_tmp += 1
+                
+    def mk_board(self, board):
+        for x in range(BOARD_SIZE):
+            for y in range(BOARD_SIZE):
+                self.RawBoard[x,y] = board[x*8+y]
 
     """
     石を置く

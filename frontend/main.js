@@ -21,7 +21,7 @@ const createSquares = () => {
     if (i == 27 || i == 36) {
       defaultState = 1;
     } else if (i == 28 || i == 35) {
-      defaultState = 2;
+      defaultState = -1;
     } else {
       defaultState = 0;
     }
@@ -51,4 +51,10 @@ function getElements(){
             console.log(User1.item(i).value + ' is not checked');
         }
     }
+    board = []
+    for (let i = 0; i < 64; i++) {
+        let a  = document.querySelector(`[data-index='${i}']`).getAttribute("data-state");
+        board.push(a);
+    }
+    console.log(board)
 }

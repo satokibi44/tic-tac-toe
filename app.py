@@ -1,5 +1,5 @@
 import sys
-from app.game import Reversi
+from backend.a import Board
 def handler(event, context): 
     user1 = event.get('queryStringParameters').get('USER1')
     user2 = event.get('queryStringParameters').get('USER2')
@@ -7,10 +7,12 @@ def handler(event, context):
     user2_color = "white"
     board = event.get('queryStringParameters').get('board')
 
-    user1_strate = Reversi[user1]
-    user2_strate = Reversi[user1]
+    print(user1)
 
-    user1_strate.next_move(user1_color,board)
-    user2_strate.next_move(user2_color,board)
+
+    board_inst = Board()
+    board_inst.mk_board(board)
+    for i in range(board_inst.BOARD_SIZE*board_inst.BOARD_SIZE):
+        board_inst.checkIN(i)
        
     return 'Hello from AWS Lambda using Python' + sys.version + '!'
