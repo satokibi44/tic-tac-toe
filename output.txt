@@ -1,0 +1,1 @@
+{"errorType":"Runtime.InvalidEntrypoint","errorMessage":"RequestId: cc874617-a18f-4bf1-aed7-c0553cd12129 Error: fork/exec /lambda-entrypoint.sh: exec format error"}
