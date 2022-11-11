@@ -40,3 +40,45 @@ class TestBoard(unittest.TestCase):
         board_inst.mk_board(board)
         ans = board_inst.get_legal_moves(-1)
         self.assertEqual([(2, 3), (3, 2), (4, 5), (5, 4)], ans)
+        
+    def test_ひっくり返えった後のboardを算出(self):
+        from backend.player import CornerPlayer
+        from backend.board import Board
+        board_inst = Board()
+        corner_player = CornerPlayer()
+        board_inst.CurrentColor = 1
+        next_move = corner_player.next_move(
+            board_inst.CurrentColor, board_inst)
+        move = board_inst.add_wall2move(next_move)
+        board = board_inst.get_flippable_discs(board_inst.CurrentColor, move[0], move[1])
+        board_inst.RawBoard = board
+        board_ans = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], 
+                     [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], 
+                     [2, 0, 0, 1, 1, 1, 0, 0, 0, 2], [2, 0, 0, 0, 1, -1, 0, 0, 0, 2], 
+                     [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], 
+                     [2, 0, 0, 0, 0, 0, 0, 0, 0, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]]
+        flag = True
+        for i in range(len(board_ans)):
+            if not all(board[i] == board_ans[i]):
+                flag = False
+        self.assertEqual(flag, True)
+    
+    def test_現在の得点を算出(self):
+        pass
+        
+    def test_ひっくり返る場所の算出(self):
+        from backend.player import CornerPlayer
+        from backend.board import Board
+        import copy
+        board_inst = Board()
+        corner_player = CornerPlayer()
+        prev_board = copy.copy(board_inst.RawBoard)
+        board_inst.CurrentColor = 1
+        next_move = corner_player.next_move(
+            board_inst.CurrentColor, board_inst)
+        move = board_inst.add_wall2move(next_move)
+        board = board_inst.get_flippable_discs(board_inst.CurrentColor, move[0], move[1])
+        board_inst.RawBoard = board
+        diff = board_inst.get_diff_board(prev_board)
+        print(diff)
+    

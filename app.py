@@ -21,10 +21,7 @@ def handler(event, context):
         now_user["strategy"] = user2
         
     play = Play(board)
-    mobilities = play.get_legal_moves(now_user_color) 
-    player = Reversi[now_user["strategy"]]
-    next_move = player.next_move(1, play.board_inst)
-    prev_board = copy.copy(board_inst.RawBoard)
+    play.tic_tac_toe(now_user)
     
     
     return 'Hello from AWS Lambda using Python' + sys.version + '!'

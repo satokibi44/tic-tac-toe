@@ -18,11 +18,13 @@ class GreedyPlayer(AbstractStrategy):
     def next_move(self, color, board):
         size = board.size
         legal_moves = board.get_legal_moves(color)
+        #今の黒or白の枚数
         base_score = board._black_score if color == 'black' else board._white_score
         max_score = base_score
         max_move = None
         for move in legal_moves:
             move_x, move_y = move
+            #get_flippable_discsでひっくり返る座標
             score = base_score + len(board.get_flippable_discs(color, move_x, move_y))
             if score > max_score:
                 max_score = score
