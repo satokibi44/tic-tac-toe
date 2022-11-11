@@ -2,7 +2,8 @@
 ライブラリ
 """
 import numpy as np
-import GetLegalMoves as BitBoardMethods
+import copy
+#import GetLegalMoves as BitBoardMethods
 """
 定数宣言
 """
@@ -41,7 +42,7 @@ MAX_TURNS = 60
 class Board:
     size = BOARD_SIZE
 
-    def __init__(self):
+    def __init__(self,color):
 
         # 全マスを空きマスに設定
         self.RawBoard = np.zeros((BOARD_SIZE + 2, BOARD_SIZE + 2), dtype=int)
@@ -62,12 +63,13 @@ class Board:
         self.Turns = 0
 
         # 現在の手番の色
-        self.CurrentColor = BLACK
+        #self.CurrentColor = BLACK
+        self.CurrentColor = 1 if color == 'black' else -1
 
         # 置ける場所と石が返る方向
         self.MovablePos = np.zeros((BOARD_SIZE + 2, BOARD_SIZE + 2), dtype=int)
         self.MovableDir = np.zeros((BOARD_SIZE + 2, BOARD_SIZE + 2), dtype=int)
-
+        
         # MovablePosとMovableDirを初期化
         self.initMovable()
         
@@ -78,14 +80,15 @@ class Board:
         self._white_score = self.get_score(self.color_white) 
         
         # ビットボードの初期配置
-        center = self.size // 2
-        self._black_bitboard = 1 << ((self.size*self.ize-1)-(self.size*(center-1)+center))
-        self._black_bitboard |= 1 << ((self.size*self.size-1)-(self.size*center+(center-1)))
-        self._white_bitboard = 1 << ((self.size*self.size-1)-(self.size*(center-1)+(center-1)))
-        self._white_bitboard |= 1 << ((self.size*self.size-1)-(self.size*center+center))
-        size = self.size
+        # center = self.size // 2
+        # self._black_bitboard = 1 << ((self.size*self.size-1)-(self.size*(center-1)+center))
+        # self._black_bitboard |= 1 << ((self.size*self.size-1)-(self.size*center+(center-1)))
+        # self._white_bitboard = 1 << ((self.size*self.size-1)-(self.size*(center-1)+(center-1)))
+        # self._white_bitboard |= 1 << ((self.size*self.size-1)-(self.size*center+center))
+        # size = self.size
          # 置ける場所の検出用マスク
-        BitMask = namedtuple('BitMask', 'h v d u ur r br b bl l ul')
+        #BitMask = namedtuple('BitMask', 'h v d u ur r br b bl l ul')
+        '''
         self._mask = BitMask(
             int(''.join((['0'] + ['1'] * (size-2) + ['0']) * size), 2),                                      # 水平方向のマスク値
             int(''.join(['0'] * size + ['1'] * size * (size-2) + ['0'] * size), 2),                          # 垂直方向のマスク値
@@ -99,6 +102,7 @@ class Board:
             int(''.join((['1'] * (size-1) + ['0']) * size), 2),                                              # 左方向のマスク値
             int(''.join((['1'] * (size-1) + ['0']) * (size-1) + ['0'] * size), 2)                            # 左上方向のマスク値
         )
+        '''
         
     def get_legal_moves_bits(self, color):
         """get_legal_moves_bits
@@ -109,7 +113,7 @@ class Board:
         Returns:
             legal_moves bits
         """
-        return BitBoardMethods.get_legal_moves_bits(color, self.size, self._black_bitboard, self._white_bitboard, self._mask)
+        #return BitBoardMethods.get_legal_moves_bits(color, self.size, self._black_bitboard, self._white_bitboard, self._mask)
 
     """
     どの方向に石が裏返るかをチェック
@@ -119,9 +123,9 @@ class Board:
     
     def get_diff_board(self,prev_board):
         diff_boards = []
-        for x in range(self.size):
+        for x in range(len(prev_board)):
             diff_board = []
-            for y in range(self.size):
+            for y in range(len(prev_board)):
                 if prev_board[x][y] == self.RawBoard[x][y]:
                     diff_board.append(True)
                 else:
@@ -132,6 +136,7 @@ class Board:
                        
     
     def get_legal_moves(self, color):
+        color = 1 if color == 'black' else -1
         legal_moves = []
         for x in range(self.size):
              for y in range(self.size):
@@ -157,7 +162,7 @@ class Board:
     def mk_board(self, board):
         for x in range(self.size):
             for y in range(self.size):
-                self.RawBoard[x,y] = board[x*8+y]    
+                self.RawBoard[y,x] = board[x*8+y]    
 
     def checkMobility(self, x, y, color):
 
@@ -292,11 +297,12 @@ class Board:
     """
     石を置くことによる盤面の変化をボードに反映
     """
-
     def flipDiscs(self, color, x, y):
-
+        y, x = self.add_wall2move((x, y))
+        color = 1 if color == 'black' else -1
+        self.CurrentColor = color
         # 石を置く
-        RawBoard = self.RawBoard
+        RawBoard = copy.copy(self.RawBoard)
         RawBoard[x, y] = color
 
         # 石を裏返す
@@ -564,7 +570,7 @@ class Board:
     def put_disc(self, color,  *move):
         self.prev_RawBoard = self.RawBoard
         board = self.get_flippable_discs(color, move[0], move[1])
-        self.RawBoard = board
+        return board
     
     def undo(self):
         self.RawBoard = self.prev_RawBoard

@@ -1,11 +1,14 @@
 from board import Board
-from game import Reversi
+from game2 import Reversi
 import copy
 
 class Play():
-    def __init__(self, board) -> None:
-        self.board_inst = Board()
+    def __init__(self, board, user) -> None:
+        self.now_user = user
+        self.board_inst = Board(self.now_user['color'])
         self.board_inst.mk_board(board)
+        self.board_inst.initMovable()
+        print("a")
         
     
     def check_mobilities(self, color):
@@ -18,16 +21,14 @@ class Play():
         return mobilities
     
     def tic_tac_toe(self, now_user):
-        mobilities = self.get_legal_moves(now_user["color"]) 
-        player = Reversi[now_user["strategy"]]
-        next_move = player.next_move(now_user["color"], self.board_inst)
         prev_board = copy.copy(self.board_inst.RawBoard)
+        player = Reversi[now_user["strategy"]]
         
-        self.board_inst.CurrentColor = now_user["color"]
-        next_move = player.next_move(self.board_inst.CurrentColor, self.board_inst)
+        next_move = player.next_move(now_user["color"] , self.board_inst)
         
-        move = self.board_inst.add_wall2move(next_move)
-        self.board_inst.flipDiscs(move[0], move[1])
-        board = self.board_inst.RawBoard
+        board = self.board_inst.put_disc(now_user["color"], next_move[0], next_move[1])
+        self.board_inst.RawBoard = board
         
         diff = self.board_inst.get_diff_board(prev_board)
+        
+        return board, diff

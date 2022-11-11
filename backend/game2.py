@@ -1,4 +1,4 @@
-from player import CornerPlayer, GreedyPlayer, EdgePlayer, MiniMaxPlayer, Corner1_Edge2_Ungreedy3
+from player2 import CornerPlayer, GreedyPlayer, EdgePlayer, MiniMaxPlayer, Corner1_Edge2_Ungreedy3
 
 Reversi = {
     # add player

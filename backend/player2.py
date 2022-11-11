@@ -7,6 +7,7 @@ class CornerPlayer(AbstractStrategy):
     def next_move(self, color, board):
         random.seed(100)
         size = board.size
+        #wallついてない
         legal_moves = board.get_legal_moves(color)
         for corner in [(0, 0), (0, size-1), (size-1, 0), (size-1, size-1)]:
             if corner in legal_moves:
