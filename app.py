@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     board, flip_point = play.tic_tac_toe(user)
     
     body = {
-            'next_board':board.tolist(),
+            'next_board':board,
             'flip_point':flip_point,
             'next_player':-play.board_inst.CurrentColor
         }

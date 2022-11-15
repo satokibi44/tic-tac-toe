@@ -11,6 +11,20 @@ class TestPlayer(unittest.TestCase):
         next_move = corner_player.next_move(now_user["color"], board_inst)
         self.assertEqual(next_move, (3, 5))
         
+    def test_corner_player2(self):
+        import os
+        import sys
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../backend'))
+        from backend.player2 import CornerPlayer
+        from backend.board import Board
+        now_user = {"strategy": "GREEDY", "color": 'white'}
+        board_inst = Board(now_user['color'])
+        board = [1, 0, -1, -1, -1, -1, 1, 0,-1, -1, 1, -1, -1, -1, 1, 0,-1, -1, 1, 1, -1, -1, 1, 0,1, -1, 1, -1, -1, -1, -1, 0,1, 1, -1, -1, -1, -1, -1, 0,1, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        board_inst.mk_board(board)
+        corner_player = CornerPlayer()
+        next_move = corner_player.next_move(now_user["color"], board_inst)
+        self.assertEqual(next_move, (0,7))
+        
     def test_greedy_player(self):
         from backend.player2 import GreedyPlayer
         from backend.board import Board

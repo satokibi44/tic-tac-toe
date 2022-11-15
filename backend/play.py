@@ -28,6 +28,7 @@ class Play():
         
         board = self.board_inst.put_disc(now_user["color"], next_move[0], next_move[1])
         self.board_inst.RawBoard = board
+        board = self.board_inst.delete_wall()
         
         diff = self.board_inst.get_diff_board(prev_board)
         

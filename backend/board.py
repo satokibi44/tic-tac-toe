@@ -118,8 +118,6 @@ class Board:
     どの方向に石が裏返るかをチェック
     """
     
-    delete_wall_board = []
-    
     def get_diff_board(self,prev_board):
         diff_boards = []
         for x in range(len(prev_board)):
@@ -137,22 +135,23 @@ class Board:
     def get_legal_moves(self, color):
         color = 1 if color == 'black' else -1
         legal_moves = []
-        for x in range(self.size):
-             for y in range(self.size):
+        for x in range(self.size+1):
+             for y in range(self.size+1):
                    if self.checkMobility(x,y,color):
                        legal_moves.append((x,y))
         legal_moves = self.delete_wall_from_moves(legal_moves)
         return legal_moves
     
     def delete_wall(self):
-        for x in range(BOARD_SIZE):
+        delete_wall_board = []
+        for x in range(BOARD_SIZE+1):
             low = []
-            for y in range(BOARD_SIZE):
+            for y in range(BOARD_SIZE+1):
                 if self.RawBoard[x, y] != 2:
-                    low.append(self.RawBoard[x, y])
+                    low.append(int(self.RawBoard[x, y]))
             if len(low) != 0:
-                self.delete_wall_board.append(low)
-        return self.delete_wall_board
+                delete_wall_board.append(low)
+        return delete_wall_board
                 
     def delete_wall_from_moves(self, moves):
         for i in range(len(moves)):
@@ -298,7 +297,7 @@ class Board:
     石を置くことによる盤面の変化をボードに反映
     """
     def flipDiscs(self, color, x, y):
-        y, x = self.add_wall2move((x, y))
+        x, y = self.add_wall2move((x, y))
         color = 1 if color == 'black' else -1
         self.CurrentColor = color
         # 石を置く
