@@ -62,6 +62,7 @@ class MiniMaxPlayer(AbstractStrategy):
         next_moves = {}
         best_score = self._MIN if color == 'black' else self._MAX
         legal_moves = board.get_legal_moves(color)
+        legal_moves_b_bits = board.get_legal_moves_bits('black')
         for move in legal_moves:
             board.put_disc(color, *move)
             score = self.get_score(next_color, board, self.depth-1, pid=pid)
@@ -84,6 +85,7 @@ class MiniMaxPlayer(AbstractStrategy):
                 [  50,  45, 50, 50, 50, 50,  45, 50],
                 [  30, -25, 45, 45, 45, 45, -25, 30],
                 [  100, 30, 50, 50, 50, 50,  30, 100]]
+        b = board.get_board_info()
         product = np.multiply(score,board.get_board_info())
         return np.sum(product)
        
@@ -97,12 +99,14 @@ class MiniMaxPlayer(AbstractStrategy):
         legal_moves_w_bits = board.get_legal_moves_bits('white')
         is_game_end = True if not legal_moves_b_bits and not legal_moves_w_bits else False
         if is_game_end or depth <= 0:
+            best_score = self.board_score(color=color, board=board, possibility_b=board.get_bit_count(legal_moves_b_bits), possibility_w=board.get_bit_count(legal_moves_w_bits)) 
             return self.board_score(color=color, board=board, possibility_b=board.get_bit_count(legal_moves_b_bits), possibility_w=board.get_bit_count(legal_moves_w_bits))  # noqa: E501
  
         # in case of pass
         legal_moves_bits = legal_moves_b_bits if color == 'black' else legal_moves_w_bits
         next_color = 'white' if color == 'black' else 'black'
         if not legal_moves_bits:
+            best_score = self.get_score(next_color, board, depth, pid=pid)
             return self.get_score(next_color, board, depth, pid=pid)
  
         # get best score
@@ -112,6 +116,7 @@ class MiniMaxPlayer(AbstractStrategy):
         for y in range(size):
             for x in range(size):
                 if legal_moves_bits & mask:
+                    unk = legal_moves_bits & mask
                     board.put_disc(color, x, y)
                     score = self.get_score(next_color, board, depth-1, pid=pid)
                     board.undo()

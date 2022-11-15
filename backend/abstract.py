@@ -1,5 +1,5 @@
 import abc
-
+import os
 
 class AbstractStrategy(metaclass=abc.ABCMeta):
     @abc.abstractmethod
@@ -29,3 +29,11 @@ class AbstractSelector(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def select_moves(self, *args, **kwargs):
         pass
+
+class Timer:
+    @classmethod
+    def get_pid(cls, obj):
+        """
+        プロセスID取得
+        """
+        return obj.__class__.__name__ + str(os.getpid())

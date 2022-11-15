@@ -39,8 +39,7 @@ class TestBoard(unittest.TestCase):
         from backend.board import Board
         now_user = {"strategy": "GREEDY", "color": 'white'}
         board_inst = Board(now_user['color'])
-        board = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '-1', '0', '0',
-         '0', '0', '0', '0', '-1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        board = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '-1', '0', '0','0', '0', '0', '0', '-1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
         board_inst.mk_board(board)
         ans = board_inst.get_legal_moves(-1)
         self.assertEqual([(2, 3), (3, 2), (4, 5), (5, 4)], ans)
@@ -106,3 +105,14 @@ class TestBoard(unittest.TestCase):
                     flag = False
         self.assertEqual(flag, True)
     
+    def test_get_legal_moves_bits(self):
+        import os
+        import sys
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../backend'))
+        from backend.player2 import CornerPlayer
+        from backend.board import Board
+        import copy
+        now_user = {"strategy": "GREEDY", "color": 'black'}
+        board_inst = Board(now_user['color'])
+        legal_moves_b_bits = board_inst.get_legal_moves_bits(now_user['color'])
+        self.assertEqual(legal_moves_b_bits, 17729692631040)

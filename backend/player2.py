@@ -1,7 +1,7 @@
 from operator import le
 import random
 import numpy as np
-from reversi.strategies import AbstractStrategy, Timer
+from abstract import AbstractStrategy, Timer
  
 class CornerPlayer(AbstractStrategy):
     def next_move(self, color, board):
@@ -83,6 +83,8 @@ class MiniMaxPlayer(AbstractStrategy):
                 [  50,  45, 50, 50, 50, 50,  45, 50],
                 [  30, -25, 45, 45, 45, 45, -25, 30],
                 [  100, 30, 50, 50, 50, 50,  30, 100]]
+        b = score,board.get_board_info()
+        
         product = np.multiply(score,board.get_board_info())
         return np.sum(product)
        

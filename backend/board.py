@@ -105,15 +105,14 @@ class Board:
         '''
         
     def get_legal_moves_bits(self, color):
-        """get_legal_moves_bits
-
-        Args:
-            color : player's color
-
-        Returns:
-            legal_moves bits
-        """
-        #return BitBoardMethods.get_legal_moves_bits(color, self.size, self._black_bitboard, self._white_bitboard, self._mask)
+        size = self.size
+        mask = 1 << ((size**2)-1)
+        legal_moves_bits = 0
+        for x, y in self.get_legal_moves(color):
+            bits = mask >> (y*size+x)
+            legal_moves_bits |= bits
+                    
+        return legal_moves_bits
 
     """
     どの方向に石が裏返るかをチェック
@@ -145,7 +144,7 @@ class Board:
         legal_moves = self.delete_wall_from_moves(legal_moves)
         return legal_moves
     
-    def delete_wall(self,moves):
+    def delete_wall(self):
         for x in range(BOARD_SIZE):
             low = []
             for y in range(BOARD_SIZE):
@@ -153,6 +152,7 @@ class Board:
                     low.append(self.RawBoard[x, y])
             if len(low) != 0:
                 self.delete_wall_board.append(low)
+        return self.delete_wall_board
                 
     def delete_wall_from_moves(self, moves):
         for i in range(len(moves)):
@@ -599,3 +599,32 @@ class Board:
 
         return False
     
+    def get_board_info(self):
+        """get_board_info
+        """
+        board_info = []
+        for row in self.RawBoard:
+            tmp = []
+            for col in row:
+                if col == BLACK:
+                    tmp += [1]
+                elif col == WHITE:
+                    tmp += [-1]
+                elif col == 0:
+                    tmp += [0]
+            if len(tmp) != 0:
+                board_info += [tmp]
+        return board_info
+    
+    def get_bit_count(self, bits):
+        """get_bit_count
+        """
+        count = 0
+        size = self.size
+        mask = 1 << ((size**2)-1)
+        for _ in range(size**2):
+            if bits & mask:
+                count += 1
+            mask >>= 1
+
+        return count

@@ -1,36 +1,31 @@
-import sys
 import json
-from backend.board import Board
-#from game import Reversi
-#from backend.play import Play
-#import copy
+import os
+import sys
 
-def handler(event, context): 
-    user1 = event.get('queryStringParameters').get('USER1')
-    user2 = event.get('queryStringParameters').get('USER2')
-    user1_color = "black"
-    user2_color = "white"
-    now_user_color = event.get('queryStringParameters').get('now_user_color')
-    now_user = {}
-    board = event.get('queryStringParameters').get('board')
+sys.path.append(os.path.join(os.path.dirname(__file__), './backend'))
+
+from backend.play import Play
+
+def lambda_handler(event, context):
+    print(event)
+    user_color = event['queryStringParameters']['now_user_color']
+    user_strategy = event['queryStringParameters']['now_user_strategy']
+    board = eval(event['queryStringParameters']['board'])
+    user = {"strategy": user_strategy, "color": user_color}
     
-    if now_user_color == "Black":
-        now_user["color"] = 1
-        now_user["strategy"] = user1
-    else:
-        now_user["color"]  = -1
-        now_user["strategy"] = user2
-        
-    now_board = []
-    flip_point = []
+    play = Play(board,user)
+    board, flip_point = play.tic_tac_toe(user)
     
-    responce = {
-        'statusCode': 200,
-        'body': {
-            'next_board':now_board,
+    body = {
+            'next_board':board.tolist(),
             'flip_point':flip_point,
-            'next_player':-now_user["color"]
+            'next_player':-play.board_inst.CurrentColor
         }
+    
+    res = {
+        "statusCode" : 200,
+        "headers" : {"Access-Control-Allow-Origin" : '*'},
+        "body" : json.dumps(body)
     }
     
-    return responce
+    return res
