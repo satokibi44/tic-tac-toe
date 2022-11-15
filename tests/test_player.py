@@ -26,6 +26,9 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(next_move, (0,7))
         
     def test_greedy_player(self):
+        import os
+        import sys
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../backend'))
         from backend.player2 import GreedyPlayer
         from backend.board import Board
         now_user = {"strategy": "GREEDY", "color": 'white'}

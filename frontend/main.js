@@ -17,9 +17,9 @@ const createSquares = () => {
         let defaultState;
         //iの値によってデフォルトの石の状態を分岐する
         if (i == 27 || i == 36) {
-            defaultState = 1;
-        } else if (i == 28 || i == 35) {
             defaultState = -1;
+        } else if (i == 28 || i == 35) {
+            defaultState = 1;
         } else {
             defaultState = 0;
         }
@@ -89,7 +89,7 @@ function getElements() {
   }
   const userId = "js-primer-example";
   fetch(
-    `https://7oe9q5o7cc.execute-api.ap-northeast-1.amazonaws.com/test/xxx?now_user_color=${Player}&now_user_strategy=Corner&board=[${board}]`
+    `https://7oe9q5o7cc.execute-api.ap-northeast-1.amazonaws.com/test/xxx?now_user_color=${Player}&now_user_strategy=${_val}&board=[${board}]`
   ).then((response) => {
     console.log(response.status); // => 200
     return response.json().then((boardInfo) => {
