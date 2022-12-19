@@ -6,7 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), './backend'))
 
 from backend.play import Play
 
-def lambda_handler(event, context):
+def handler(event, context):
     user_color = event['queryStringParameters']['now_user_color']
     user_strategy = event['queryStringParameters']['now_user_strategy']
     board = eval(event['queryStringParameters']['board'])

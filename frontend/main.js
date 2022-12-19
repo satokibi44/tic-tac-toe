@@ -1,9 +1,10 @@
 const stage = document.getElementById("stage");
 const squareTemplate = document.getElementById("square-template");
 
+const apiUrl = "https://lhqqqag3zd.execute-api.ap-northeast-1.amazonaws.com/test"
+
 class CallApi{
     async callAiApi(playerState, boardState){
-        const apiUrl = 'https://7oe9q5o7cc.execute-api.ap-northeast-1.amazonaws.com/test/xxx';
         const response = await fetch(`${apiUrl}?now_user_color=black&now_user_strategy=${playerState.strategy}&board=[${boardState.board}]`);
         const jsondata = await response.json();
         const next_board = jsondata['next_board'];
@@ -14,9 +15,8 @@ class CallApi{
     }
     
     async callHumanApi(playerState, boardState, index){
-        const index_x = Math.floor((index + 1) / 8);
-        const index_y = ((index + 1) % 8) - 1;
-        const apiUrl = 'https://7oe9q5o7cc.execute-api.ap-northeast-1.amazonaws.com/test/xxx';
+        const index_x = Math.floor(index / 8);
+        const index_y = index % 8;
         const response = await fetch(`${apiUrl}?now_user_color=white&now_user_strategy=human&board=[${boardState.board}]&flip_point=[${index_x},${index_y}]`);
         const jsondata = await response.json();
         const next_board = jsondata['next_board'];
@@ -160,6 +160,17 @@ window.onload = () => {
 function delete_select() {
   var select = document.getElementById("select_user1");
   select.remove();
+  var select = document.getElementById("button");
+  select.remove();
+  const passButton = document.createElement('button');
+  passButton.innerText = "PASS";
+  passButton.id = "pass-button";
+  passButton.onclick = function pass(){
+    if(playerState.color == -1){
+        callApi.callAiApi(playerState, boardState);
+    }
+};
+  document.body.appendChild(passButton);
 }
 
 let User = "GREEDY";
