@@ -2,6 +2,8 @@ from operator import le
 import random
 import numpy as np
 from reversi.strategies import AbstractStrategy, Timer
+
+import inspect
  
 class CornerPlayer(AbstractStrategy):
     def next_move(self, color, board):

@@ -1,7 +1,7 @@
 const stage = document.getElementById("stage");
 const squareTemplate = document.getElementById("square-template");
 
-const apiUrl = "https://lhqqqag3zd.execute-api.ap-northeast-1.amazonaws.com/test"
+const apiUrl = "https://eor17d38l9.execute-api.ap-northeast-1.amazonaws.com/test"
 
 class CallApi{
     async callAiApi(playerState, boardState){
