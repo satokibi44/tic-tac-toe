@@ -30,6 +30,10 @@ class Play():
             print(e)
             res_board = self.board_inst.delete_wall()
             return res_board, self.board_inst.get_diff_board(res_board)
+        except KeyError as e:
+            print(e)
+            res_board = self.board_inst.delete_wall()
+            return res_board, self.board_inst.get_diff_board(res_board)
             
         board = self.board_inst.put_disc(now_user["color"], next_move[0], next_move[1])
         self.board_inst.RawBoard = board

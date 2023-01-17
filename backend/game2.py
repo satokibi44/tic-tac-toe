@@ -1,4 +1,4 @@
-from player2 import CornerPlayer, GreedyPlayer, EdgePlayer, MiniMaxPlayer, Corner1_Edge2_Ungreedy3, Switch
+from player2 import CornerPlayer, GreedyPlayer, EdgePlayer, MiniMaxPlayer, Corner1_Edge2_Ungreedy3, Switch, middlePlayer, doppelplayer, RandomPlayer, originalPlayer
 
 Reversi = {
     # add player
@@ -18,4 +18,11 @@ Reversi = {
                 CornerPlayer(),       # Table AI
                 MiniMaxPlayer(depth=3),  # MonteCarlo AI
             ],
-        ),}
+        ),
+    'UEMURA':middlePlayer(),
+    'KUSAKA':doppelplayer(),
+    'MURAKAMI': Switch(
+        turns = [4,20,60],
+        strategies = [RandomPlayer(),GreedyPlayer(),originalPlayer(depth = 3)])
+    
+    }
